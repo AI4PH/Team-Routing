@@ -28,6 +28,7 @@ DATA_PATH = os.path.join(SCRIPT_PATH, "fake_dummy_data/DummyData.shp")
 # Read the .shp file via geopanadas and store as a pandas dataframe.
 ROUTES = gpd.read_file(DATA_PATH)
 ROUTE_DATA = pd.DataFrame(ROUTES)
+print(ROUTE_DATA)
 
 # Get the start time.
 START_TIME = time.time()
@@ -252,6 +253,7 @@ def calculate_cost(matrix):
             cost += min_col[index]
 
     return cost, matrix
+
 
 # TODO: Refactor the following code / make sure it works properly.
 def node_to_node_search(start_node, goal):
@@ -527,8 +529,8 @@ def space_state_algorithm(start_node, original_matrix, graph):
     visual_list = []
     final_list = []
 
-    root = Solid_State_Node(None, 0, parent_node, 0, cost_matrix, initial_cost)
-    solid_state_tree = Solid_State_Tree(root)
+    root = SolidStateNode(None, 0, parent_node, 0, cost_matrix, initial_cost)
+    solid_state_tree = SolidStateTree(root)
 
     priority_queue.push_wo_matrix(root, initial_cost)
 
@@ -637,8 +639,8 @@ def space_state_algorithm(start_node, original_matrix, graph):
 
                 sub_node.cost = total_cost
 
-                state_node = Solid_State_Node(parent_state, i, sub_node, parent_state.level + 1,
-                                              parent_matrix_copy_explored, total_cost)
+                state_node = SolidStateNode(parent_state, i, sub_node, parent_state.level + 1,
+                                            parent_matrix_copy_explored, total_cost)
                 i += 1
 
                 # print(parent_state.level)
@@ -864,13 +866,13 @@ def visualization(graph_data=None, path=None):
 def main():
     # General Parameters
     ALGORITHM = 4
-    TESTING = False
+    TESTING = True
     VISUALIZATION = True
     ideal_route = []
 
     # If we want to test the code using our sample matrices.
     if TESTING:
-        sample_number = 4
+        sample_number = 1
         data, ideal_route = sample_data(sample_number)
 
         graphical_data = Graph(data)
